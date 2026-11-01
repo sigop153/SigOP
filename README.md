@@ -160,5 +160,4 @@ uv run ruff check .
 
 ## License
 
-MIT. See `LICENSE`. Parts derive from Meta-Harness (MIT); the built-in objectives
-carry their datasets' terms.
+MIT. See `LICENSE`. Parts derive from Meta-Harness (MIT).
