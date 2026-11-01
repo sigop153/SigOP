@@ -1,0 +1,18 @@
+# LawBench charge prediction: Chinese case facts to the set of criminal charges.
+# Splits and scoring follow Meta-Harness's text-classification task; see ../README.md.
+name = "LawBench"
+scorer = "set"
+answer_open = "[罪名]"
+answer_close = "<eoa>"
+separators = [";", "；", ",", "，", "、"]
+temperature = 0.0
+samples = 1
+prompt = """请你模拟法官依据下面事实给出罪名。请先进行推理分析，然后将最终答案写在[罪名]和<eoa>之间。
+
+格式示例：
+- 单个罪名: [罪名]盗窃<eoa>
+- 多个罪名: [罪名]盗窃;诈骗<eoa>
+
+
+## 案件事实
+{input}"""

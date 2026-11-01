@@ -1,0 +1,53 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "sigop"
+version = "0.0.1"
+description = "SigOP: self-evolving harnesses on open-weight models with PLATEAU and OVERFIT feedback."
+readme = "README.md"
+# tomllib (objective.toml) is in the standard library from 3.11.
+requires-python = ">=3.11"
+license = { text = "MIT" }
+dependencies = [
+    "jsonargparse[signatures]>=4.0",
+    "openai>=1.0",
+    # Parses gpt-oss harmony output when the executor server does not.
+    "openai-harmony>=0.0.4",
+    # models.yaml
+    "pyyaml>=6.0",
+    # The proxy between Claude Code and the proposer.
+    "litellm[proxy]>=1.60",
+    # Serves the executor and the proposer. Linux + CUDA only.
+    "vllm>=0.19",
+]
+
+# uv run installs this group too.
+[dependency-groups]
+dev = [
+    "pytest>=7.0",
+    "ruff>=0.4",
+]
+
+# vLLM only resolves on Linux, so the lock covers Linux only.
+[tool.uv]
+environments = ["sys_platform == 'linux'"]
+
+# models.yaml, objectives/ and serving/ live beside the package and are read from the
+# checkout; uv run installs the project editable.
+[tool.hatch.build.targets.wheel]
+packages = ["sigop"]
+
+[tool.ruff]
+line-length = 110
+# Vendored verbatim from the paper's runs.
+extend-exclude = ["serving"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.pyright]
+venvPath = "."
+venv = ".venv"

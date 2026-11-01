@@ -1,0 +1,10 @@
+proposer: Qwen/Qwen3.8-27B-FP8
+executor: openai/gpt-oss-20b
+objective: lawbench
+iterations: 50
+patience: 5
+tolerance: 0.01
+candidates: 3
+propose_timeout: 2400
+gpus: "0,1"
+sandbox: true

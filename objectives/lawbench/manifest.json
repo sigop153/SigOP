@@ -1,0 +1,15 @@
+{
+  "sizes": {
+    "proposal": 150,
+    "train": 50,
+    "val": 50,
+    "test": 100
+  },
+  "sha256": {
+    "proposal": "d149d07888cba694d752fe2b47a0345419df1d6612de905d73824467d61199f0",
+    "train": "9597a1a4110bd657ebe0de86bce6eaadea00e6738a8550f59f777d6605331367",
+    "val": "fc7a628cc7643227d070daacafb1588baccd1d00e371dc2cd79141922fa7cc27",
+    "test": "a258713dc8229b5d75ebe94c6959c0737a94522deb96c723ba414f998b70dea6"
+  },
+  "overlapping_inputs": 0
+}

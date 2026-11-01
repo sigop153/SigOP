@@ -1,0 +1,49 @@
+# vLLM settings for the models optimize.py serves itself, keyed by the exact name you pass to
+# --proposer or --executor. A model either carries its own settings or names a family under
+# families: and takes that family's settings. The parsers are vLLM's:
+#   python -m vllm.entrypoints.openai.api_server --help | grep -A3 -E 'reasoning-parser|tool-call-parser'
+#
+# reasoning_parser   splits the model's thinking from its answer
+# tool_call_parser   turns the model's tool-call text into structured tool calls; a proposer
+#                    needs this because Claude Code works through tool calls
+# chat_template      a file in serving/chat_templates/, when the stock template rejects the
+#                    several system messages Claude Code sends (Qwen)
+# max_model_len      context length the server is started with; vLLM refuses to start when
+#                    the KV cache cannot hold it, so this is what decides whether a model fits
+# flags              anything else, passed to vLLM as is
+
+gpu_memory_utilization: 0.90
+
+models:
+    Qwen/Qwen3.5-35B-A3B-FP8:
+        reasoning_parser: qwen3
+        tool_call_parser: qwen3_coder
+        chat_template: qwen35_chat_template.jinja
+        max_model_len: 196608
+        flags: ["--language-model-only"]
+
+    Qwen/Qwen3.8-27B-FP8:
+        reasoning_parser: qwen3
+        tool_call_parser: qwen3_coder
+        chat_template: qwen38_chat_template.jinja
+        max_model_len: 163840
+        flags: ["--language-model-only"]
+
+    deepseek-ai/DeepSeek-V4-Flash-0731:
+        reasoning_parser: deepseek_r1
+        tool_call_parser: deepseek_v3
+        max_model_len: 163840
+        flags: ["--trust-remote-code"]
+
+    openai/gpt-oss-20b:
+        family: gpt-oss
+
+    openai/gpt-oss-120b:
+        family: gpt-oss
+
+families:
+    gpt-oss:
+        reasoning_parser: openai_gptoss
+        tool_call_parser: openai
+        max_model_len: 131072
+        flags: ["--trust-remote-code"]
