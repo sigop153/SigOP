@@ -133,7 +133,7 @@ def main(
         settings = load_settings(run)
         print(f"resuming {run.root} with its saved settings: {settings.proposer} proposing, "
               f"{settings.executor} executing, objective {settings.objective}", flush=True)
-    preflight(serve_executor=not executor_url, serve_proposer=not proposer_url)
+    preflight(serve_executor=not executor_url, serve_proposer=not proposer_url, sandbox=settings.sandbox)
     random.seed(settings.seed)        # harness code that uses `random` without its own generator
     loaded = load_objective(settings.objective, settings.seed)
     devices = gpus.split(",")

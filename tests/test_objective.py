@@ -61,6 +61,13 @@ def test_s2d_targets_are_within_the_label_set():
             assert item.target in labels, item.target
 
 
+def test_labels_reach_the_proposer_in_the_task():
+    objective = load_objective("s2d")
+    assert all(label in objective.task for label in objective.spec.labels)
+    assert "objective.toml" not in objective.task
+    assert "Labels:" not in load_objective("lawbench").task
+
+
 def test_builtin_prompt_wraps_the_input():
     objective = load_objective("lawbench")
     assert "{input}" in objective.spec.prompt

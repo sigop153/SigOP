@@ -140,6 +140,36 @@ runs/<name>/             the proposer's working folder
 runs/<name>.heldout/     val and test scores, every decision (detector.jsonl), server logs
 ```
 
+## Troubleshooting
+
+### `bwrap: setting up uid map: Permission denied`
+
+Ubuntu 24.04 restricts unprivileged user namespaces with AppArmor, which stops bubblewrap from
+starting even when it is installed. To check, run the command below; it prints nothing when
+bubblewrap works:
+
+```bash
+bwrap --ro-bind / / /bin/true
+```
+
+To allow it, add an AppArmor profile for bubblewrap. This needs root, and on a shared machine it
+lets every user create namespaces through `bwrap`, so check with your administrator first:
+
+```bash
+sudo tee /etc/apparmor.d/bwrap > /dev/null <<'EOF'
+abi <abi/4.0>,
+include <tunables/global>
+
+profile bwrap /usr/bin/bwrap flags=(unconfined) {
+  userns,
+}
+EOF
+sudo apparmor_parser -r /etc/apparmor.d/bwrap
+```
+
+Otherwise, `--sandbox false` runs the proposer session unconfined: it can read anything your user
+can, including the heldout folder and the objective's val and test splits.
+
 ## Development
 
 ```bash

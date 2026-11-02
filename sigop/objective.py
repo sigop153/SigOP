@@ -80,7 +80,7 @@ class Objective:
     spec: ObjectiveSpec
     splits: Splits
     scorer: Scorer
-    task: str                         # TASK.md, or a one-line stand-in without one
+    task: str                         # TASK.md, or a one-line stand-in without one, then the labels if any
     root: Path | None                 # the folder, None for a single CSV
     source: str = ""                  # what load_objective was given, so a child process can reload it
     seed: int = SEED
@@ -126,6 +126,8 @@ def load_folder(root: Path) -> Objective:
     splits = Splits(*(read_items(file) for file in files))
     task_path = root / "TASK.md"
     task = task_path.read_text(encoding="utf-8") if task_path.exists() else f"# {spec.name}\n"
+    if spec.labels:                   # the proposer's sandbox does not contain objective.toml
+        task = f"{task.rstrip()}\n\nLabels: {', '.join(spec.labels)}\n"
     return Objective(spec=spec, splits=splits, scorer=make_scorer(spec), task=task, root=root)
 
 

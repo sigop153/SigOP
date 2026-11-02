@@ -36,7 +36,7 @@ CHAT_TEMPLATES = SERVING / "chat_templates"
 READY_TIMEOUT_SECONDS = 1800
 
 
-def preflight(serve_executor: bool, serve_proposer: bool) -> None:
+def preflight(serve_executor: bool, serve_proposer: bool, sandbox: bool) -> None:
     """Fail before any server starts when a piece is missing, naming the fix."""
     missing = []
     if (serve_executor or serve_proposer) and importlib.util.find_spec("vllm") is None:
@@ -52,6 +52,9 @@ def preflight(serve_executor: bool, serve_proposer: bool) -> None:
         missing.append("the litellm command is not on PATH (run through uv run)")
     if shutil.which("claude") is None:
         missing.append("the claude CLI is not on PATH: https://docs.anthropic.com/claude-code")
+    if sandbox and shutil.which("bwrap") is None:
+        missing.append("bubblewrap is not installed (apt install bubblewrap), and the proposer needs it to be "
+                       "confined; pass --sandbox false to run it unconfined")
     if missing:
         raise SystemExit("cannot start:\n  " + "\n  ".join(missing))
 

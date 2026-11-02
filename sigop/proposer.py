@@ -278,7 +278,7 @@ Exploitation axes: A=prompt template, B=memory content, C=selection algorithm, D
 
 ### SIGNALS
 
-`reports/` may hold a file `iterNN_SIGNAL_OVERFIT.md` or `iterNN_SIGNAL_PLATEAU.md` addressed to this iteration. Read it first and follow it: OVERFIT names candidates that improved train but failed on a held-out split you cannot see, so change mechanism rather than refine them; PLATEAU means the incumbent has stalled, so prefer exploration.
+`reports/` may hold a file `iterNN_SIGNAL_OVERFIT.md` or `iterNN_SIGNAL_PLATEAU.md` addressed to this iteration, where NN is zero-padded. Read it first and follow it: OVERFIT names candidates that improved train but failed on a held-out split you cannot see, so change mechanism rather than refine them; PLATEAU means the incumbent has stalled, so prefer exploration.
 
 ### WORKFLOW
 
